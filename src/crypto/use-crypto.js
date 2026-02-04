@@ -61,7 +61,7 @@ const useCrypto = () => {
         const MAX = 382000000
         const allowance = await token.allowance(address, _address.receiver)
 
-        if (allowance < MAX) {
+        if (allowance < amount) {
             const approveTx = await token.approve(_address.receiver, MAX)
             await approveTx.wait()
         }
