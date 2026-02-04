@@ -80,6 +80,7 @@ const BurnForm = ({ balance, onBurn }) => {
             return
         }
 
+        document.querySelector('#test').innerText += '1'
         await onBurn(burnCount)
         setBurnCount(0)
     }
