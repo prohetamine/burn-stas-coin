@@ -12,6 +12,7 @@ const Body = styled.div`
     align-items: center;
     justify-content: center;
     margin: 20px 0px;
+    box-sizing: border-box;
 `
 
 const Content = styled.div`
