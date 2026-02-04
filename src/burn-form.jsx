@@ -77,7 +77,6 @@ const BurnForm = ({ balance, onBurn }) => {
         }
 
         if (burnCount !== 0 && balance < burnCount) {
-            alert(balance)
             return
         }
 
@@ -92,6 +91,7 @@ const BurnForm = ({ balance, onBurn }) => {
                     value={burnCount} 
                     onChange={({ target: { value } }) => {
                         const burnCount = value.match(/\d+/gi)
+                        alert(balance)
                         setBurnCount(() => burnCount > balance ? balance : parseInt(burnCount) || 0)
                     }}
                 />
