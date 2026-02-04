@@ -1,5 +1,5 @@
 import { useAppKit, useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
-import { BrowserProvider, Contract, JsonRpcProvider, Wallet, formatUnits, getAddress, parseUnits, MaxUint256 } from 'ethers'
+import { BrowserProvider, Contract, JsonRpcProvider, getAddress, parseUnits, MaxUint256 } from 'ethers'
 
 import config from './config.js'
 import { useCallback } from 'react'

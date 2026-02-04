@@ -65,8 +65,6 @@ const App = () => {
     )
   }
 
-  console.log(balance)
-
   return (
     <Body>
         <Wallet onClick={() => open()} isConnected={isConnected} />

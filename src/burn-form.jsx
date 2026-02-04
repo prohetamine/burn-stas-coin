@@ -77,6 +77,7 @@ const BurnForm = ({ balance, onBurn }) => {
         }
 
         if (burnCount !== 0 && balance < burnCount) {
+            alert(balance)
             return
         }
 
