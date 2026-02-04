@@ -6,5 +6,5 @@ cd dist
 git init
 git add -A
 git commit -m 'deploy'
-git push -f git@github.com:prohetamine/service-crypto-chat-paint.git main:gh-pages
+git push -f git@github.com:prohetamine/burn-stas-coin.git main:gh-pages
 cd -
