@@ -52,22 +52,28 @@ const useCrypto = () => {
     }
 
     const burn = async (amount = 0) => {
+        alert('start')
         const [signer, network] = await createSignerPrivate()
         const _address = config.address[network]
 
         const token = new Contract(_address.token, config.ABI.token, signer)
             , receiver = new Contract(_address.receiver, config.ABI.receiver, signer)
 
+        alert('allowance')
         const MAX = 382000000
         const allowance = await token.allowance(address, _address.receiver)
 
         if (allowance < amount) {
+            alert('approve')
             const approveTx = await token.approve(_address.receiver, MAX)
             await approveTx.wait()
         }
 
+        alert('burn')
         const burnTx = await receiver.burn(amount)
+        alert('wait')
         const tx = await burnTx.wait()
+        alert('end')
         return tx.status === 1
     }
 
