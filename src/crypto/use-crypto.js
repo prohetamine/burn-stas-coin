@@ -1,5 +1,5 @@
 import { useAppKit, useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
-import { BrowserProvider, Contract, JsonRpcProvider, Wallet, constants } from 'ethers'
+import { BrowserProvider, Contract, JsonRpcProvider, Wallet } from 'ethers'
 
 import config from './config.js'
 
@@ -58,8 +58,7 @@ const useCrypto = () => {
         const token = new Contract(_address.token, config.ABI.token, signer)
             , receiver = new Contract(_address.receiver, config.ABI.receiver, signer)
 
-
-        const MAX = constants.MaxUint256
+        const MAX = 382000000
         const allowance = await token.allowance(address, _address.receiver)
 
         if (allowance < MAX) {
