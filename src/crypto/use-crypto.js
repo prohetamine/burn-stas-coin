@@ -1,81 +1,104 @@
 import { useAppKit, useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
-import { BrowserProvider, Contract, JsonRpcProvider, Wallet } from 'ethers'
+import { BrowserProvider, Contract, JsonRpcProvider, Wallet, formatUnits, getAddress, parseUnits, MaxUint256 } from 'ethers'
 
 import config from './config.js'
+import { useCallback } from 'react'
+
+const DEAD_ADDRESS = getAddress('0x000000000000000000000000000000000000dEaD')
 
 const useCrypto = () => {
     const { open } = useAppKit()
         , { address, isConnected } = useAppKitAccount({ namespace: 'eip155' })
         , { walletProvider } = useAppKitProvider('eip155')
 
-    const createSignerPrivate = async () => {
+    const getWriteContext = useCallback(async () => {
         if (!walletProvider || !address) {
-            return
+            throw new Error('Wallet not connected')
         }
+
         const provider = new BrowserProvider(walletProvider)
         const network = await provider.getNetwork()
         const signer = await provider.getSigner()
-        return [signer, parseInt(network.chainId)]
-    }
-    
-    const getBalance = async () => {
-        const [signer, network] = await createSignerPrivate()
-        const _address = config.address[network]
-        
-        const token = new Contract(_address.token, config.ABI.token, signer)
-        const balance = await token.balanceOf(address)
-        return parseInt(balance)
-    }
-
-    const getBurnedBalance = async () => {
-        const chunks = []
-        for (let x = 0; x < config.blockChainsData.length; x++) {
-            const _wallet = Wallet.createRandom()
-            const { token, publicRpc, networkType } = config.blockChainsData[x]
-
-            const provider = new JsonRpcProvider(publicRpc)
-            const wallet = new Wallet(_wallet.privateKey, provider)
-
-            const receiver = new Contract(token, config.ABI.token, wallet)
-                , count = await receiver.balanceOf('0x000000000000000000000000000000000000dEaD')
-            
-            chunks.push({ 
-                networkType,
-                count: parseInt(count)
-            })
-        }
 
         return {
-            all: chunks.reduce((ctx, { count }) => count + ctx, 0),
-            chunks
+            signer,
+            chainId: Number(network.chainId)
         }
-    }
+    }, [walletProvider, address])
 
-    const burn = async (amount = 0) => {
-        alert('start')
-        const [signer, network] = await createSignerPrivate()
-        const _address = config.address[network]
+    const getTokenContract = useCallback((tokenAddress, providerOrSigner) => {
+        return new Contract(tokenAddress, config.ABI.token, providerOrSigner)
+    }, [])
 
-        const token = new Contract(_address.token, config.ABI.token, signer)
-            , receiver = new Contract(_address.receiver, config.ABI.receiver, signer)
+    const getBalance = useCallback(async () => {
+        const { signer, chainId } = await getWriteContext()
+        const tokenAddress = config.address[chainId]?.token
 
-        alert('allowance')
-        const MAX = 382000000
-        const allowance = await token.allowance(address, _address.receiver)
+        if (!tokenAddress) {
+            throw new Error(`Unsupported chainId: ${chainId}`)
+        }
 
-        if (allowance < amount) {
-            alert('approve')
-            const approveTx = await token.approve(_address.receiver, MAX)
+        const token = getTokenContract(tokenAddress, signer)
+        const balance = await token.balanceOf(address)
+
+        return parseInt(balance)
+    }, [address, getWriteContext, getTokenContract])
+
+    const getBurnedBalance = useCallback(async () => {
+        const results = await Promise.all(
+            config.blockChainsData.map(async ({ token, publicRpc, networkType }) => {
+                const provider = new JsonRpcProvider(publicRpc)
+                const contract = getTokenContract(token, provider)
+
+                const balance = await contract.balanceOf(DEAD_ADDRESS)
+
+                return {
+                    networkType,
+                    count: parseInt(balance)
+                }
+            })
+        )
+
+        return {
+            all: results.reduce((acc, x) => acc + x.count, 0),
+            chunks: results
+        }
+    }, [getTokenContract])
+
+    const burn = useCallback(async (amount) => {
+        if (!amount || Number(amount) <= 0) {
+            throw new Error('Invalid burn amount')
+        }
+
+        const { signer, chainId } = await getWriteContext()
+        const addresses = config.address[chainId]
+
+        if (!addresses) {
+            throw new Error(`Unsupported chainId: ${chainId}`)
+        }
+
+        const token = getTokenContract(addresses.token, signer)
+        const receiver = new Contract(
+            addresses.receiver,
+            config.ABI.receiver,
+            signer
+        )
+
+        const decimals = await token.decimals()
+        const value = parseUnits(amount.toString(), decimals)
+
+        const allowance = await token.allowance(address, addresses.receiver)
+
+        if (allowance < value) {
+            const approveTx = await token.approve(addresses.receiver, MaxUint256)
             await approveTx.wait()
         }
 
-        alert('burn')
-        const burnTx = await receiver.burn(amount)
-        alert('wait')
-        const tx = await burnTx.wait()
-        alert('end')
-        return tx.status === 1
-    }
+        const burnTx = await receiver.burn(value)
+        const receipt = await burnTx.wait()
+
+        return receipt.status === 1
+    }, [address, getWriteContext, getTokenContract])
 
     return {
         open, 
