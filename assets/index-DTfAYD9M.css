@@ -1,1 +1,0 @@
-#html,body,#root{margin:0;padding:0;width:100%;background:#f2da3a}body{font-family:Inter}.spin{animation-name:spin;animation-duration:15s;animation-iteration-count:infinite;animation-timing-function:linear}@keyframes spin{0%{transform:rotate(0)}50%{transform:rotate(180deg)}to{transform:rotate(360deg)}}
