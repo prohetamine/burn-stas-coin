@@ -1,5 +1,5 @@
 import { useAppKit, useAppKitAccount, useAppKitProvider } from '@reown/appkit/react'
-import { BrowserProvider, Contract, JsonRpcProvider, getAddress, parseUnits, MaxUint256 } from 'ethers'
+import { BrowserProvider, Contract, JsonRpcProvider, getAddress, MaxUint256 } from 'ethers'
 
 import config from './config.js'
 import { useCallback } from 'react'
@@ -84,17 +84,14 @@ const useCrypto = () => {
             signer
         )
 
-        const decimals = await token.decimals()
-        const value = parseUnits(amount.toString(), decimals)
-
         const allowance = await token.allowance(address, addresses.receiver)
-
-        if (allowance < value) {
+        
+        if (allowance < amount) {
             const approveTx = await token.approve(addresses.receiver, MaxUint256)
             await approveTx.wait()
         }
 
-        const burnTx = await receiver.burn(value)
+        const burnTx = await receiver.burn(amount)
         const receipt = await burnTx.wait()
 
         return receipt.status === 1

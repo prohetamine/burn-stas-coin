@@ -88,10 +88,9 @@ const BurnForm = ({ balance, onBurn }) => {
         <Body>
             <Overflow>
                 <Input 
-                    value={burnCount} 
+                    value={isConnected && balance !== 0 ? burnCount : '🚫'} 
                     onChange={({ target: { value } }) => {
                         const burnCount = value.match(/\d+/gi)
-                        alert(balance)
                         setBurnCount(() => burnCount > balance ? balance : parseInt(burnCount) || 0)
                     }}
                 />
