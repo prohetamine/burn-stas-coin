@@ -49,29 +49,23 @@ const App = () => {
     }
   }, [])
 
-  const handleBurn = async count => {
-    if (!isConnected) {
-      return
-    }
-
-    await burn(count)
-    
-    setBalance(
-      await getBalance()
-    )
-  
-    setBurnedCount(
-      await getBurnedBalance()
-    )
-  }
-
   return (
     <Body>
         <Wallet onClick={() => open()} isConnected={isConnected} />
         <BurnStars>{burnedCount.all}</BurnStars>
         <BurnForm 
             balance={balance} 
-            onBurn={burnCount => handleBurn(burnCount)}
+            onBurn={async count => {
+              await burn(count)
+              
+              setBalance(
+                await getBalance()
+              )
+            
+              setBurnedCount(
+                await getBurnedBalance()
+              )
+            }}
         />
         <BurnStatus chunks={burnedCount.chunks} />
     </Body>
