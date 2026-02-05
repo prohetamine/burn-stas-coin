@@ -41,12 +41,31 @@ const Description = styled.div`
     font-weight: 600;
 `
 
+const OverflowIconCoin = styled.div`
+    position: relative;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+const IconText = styled.div`
+    position: absolute;
+    color: #000000;
+    font-family: "inter";
+    font-weight: 600;
+    font-size: 23px;
+    display: flex;
+`
+
 const IconCoin = styled.div`
     background-image: url("${stas}");
     background-size: cover;
     width: 50px;
     height: 50px;
 `
+
 
 const STAR_COUNT = 150
 const MAX_OFFSET = 120
@@ -195,7 +214,10 @@ const BurnStars = ({ children }) => {
             <Content ref={counterRef}>
                 <BurnCount>
                     {formatNumber(parseInt(children || 0))}
-                    <IconCoin />
+                    <OverflowIconCoin>
+                        <IconCoin className='spin' />
+                        <IconText>S</IconText>
+                    </OverflowIconCoin>
                 </BurnCount>
                 <Description>Burn STAS coin.</Description>
             </Content>
