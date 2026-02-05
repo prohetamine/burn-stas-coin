@@ -82,7 +82,7 @@ const B = styled.div`
 
 const formatWithCommas = n => {
   if (Number.isNaN(n)) return '0'
-  return n.toLocaleString()
+  return parseInt(n).toLocaleString()
 }
 
 const BurnStatus = ({ chunks }) => {
