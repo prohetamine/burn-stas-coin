@@ -1,4 +1,4 @@
-import{c as d,r as c,e as m,n as r,a as f,i as v,d as y,v as b,b as h,f as g,U as w}from"./index-Bgp_vv6t.js";const x=d`
+import{c as d,r as m,e as c,n as r,a as f,i as v,d as y,v as b,b as h,f as g,U as w}from"./index-Du9KFbd4.js";const x=d`
   :host {
     position: relative;
     display: inline-block;
@@ -9,7 +9,7 @@ import{c as d,r as c,e as m,n as r,a as f,i as v,d as y,v as b,b as h,f as g,U a
   }
 
   :host([data-error='false']) > input {
-    color: ${({tokens:t})=>t.theme.textSecondary};
+    color: ${({tokens:t})=>t.theme.textPrimary};
   }
 
   input {
@@ -75,4 +75,4 @@ import{c as d,r as c,e as m,n as r,a as f,i as v,d as y,v as b,b as h,f as g,U a
       autofocus
       value=${this.value??""}
       @input=${this.dispatchInputChangeEvent.bind(this)}
-    />`}dispatchInputChangeEvent(){this.inputElementRef.value&&(this.inputElementRef.value.value=w.maskInput({value:this.inputElementRef.value.value,decimals:this.maxDecimals,integers:this.maxIntegers}),this.dispatchEvent(new CustomEvent("inputChange",{detail:this.inputElementRef.value.value,bubbles:!0,composed:!0})),this.resizeInput())}resizeInput(){if(this.widthVariant==="fit"){const e=this.inputElementRef.value;if(e){const n=e.previousElementSibling;n&&(n.textContent=e.value||"0",e.style.width=`${n.offsetWidth}px`)}}}};i.styles=[c,m,x];a([r({type:Boolean})],i.prototype,"disabled",void 0);a([r({type:String})],i.prototype,"value",void 0);a([r({type:String})],i.prototype,"placeholder",void 0);a([r({type:String})],i.prototype,"widthVariant",void 0);a([r({type:Number})],i.prototype,"maxDecimals",void 0);a([r({type:Number})],i.prototype,"maxIntegers",void 0);a([r({type:String})],i.prototype,"fontSize",void 0);a([r({type:Boolean})],i.prototype,"error",void 0);i=a([f("wui-input-amount")],i);
+    />`}dispatchInputChangeEvent(){this.inputElementRef.value&&(this.inputElementRef.value.value=w.maskInput({value:this.inputElementRef.value.value,decimals:this.maxDecimals,integers:this.maxIntegers}),this.dispatchEvent(new CustomEvent("inputChange",{detail:this.inputElementRef.value.value,bubbles:!0,composed:!0})),this.resizeInput())}resizeInput(){if(this.widthVariant==="fit"){const e=this.inputElementRef.value;if(e){const n=e.previousElementSibling;n&&(n.textContent=e.value||"0",e.style.width=`${n.offsetWidth}px`)}}}};i.styles=[m,c,x];a([r({type:Boolean})],i.prototype,"disabled",void 0);a([r({type:String})],i.prototype,"value",void 0);a([r({type:String})],i.prototype,"placeholder",void 0);a([r({type:String})],i.prototype,"widthVariant",void 0);a([r({type:Number})],i.prototype,"maxDecimals",void 0);a([r({type:Number})],i.prototype,"maxIntegers",void 0);a([r({type:String})],i.prototype,"fontSize",void 0);a([r({type:Boolean})],i.prototype,"error",void 0);i=a([f("wui-input-amount")],i);
