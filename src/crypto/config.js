@@ -26,8 +26,8 @@ const config = {
   metadata: {
     name: 'Burn STAS Coin',
     description: 'Burn STAS Coin in all network',
-    url: 'https://prohetamine.github.io/burn-stas-coin/',
-    icons: ['https://prohetamine.github.io/burn-stas-coin/icon.svg']
+    url: 'https://burn.prohetamine.ru',
+    icons: ['https://burn.prohetamine.ru/icon.svg']
   },
   projectId: '1febfd92481d4ea997711d2ac4a363c0',
   blockChainsData,
